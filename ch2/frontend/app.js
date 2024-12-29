@@ -9,14 +9,25 @@ app.use(stringReplace({
    'SERVICE_URL': SERVICE_URL,
    'KC_URL': KC_URL
 }));
-app.use(express.static('.'))
 
+// Serve static files from the current directory
+app.use(express.static('.'));
+
+// Endpoint for root ('/')
 app.get('/', function(req, res) {
-    res.render('index.html');
+    res.sendFile(__dirname + '/index.html');
 });
 
+// Endpoint for client.js
 app.get('/client.js', function(req, res) {
-    res.render('client.js');
+    res.sendFile(__dirname + '/client.js');
 });
 
-app.listen(8000);
+const parts = KC_URL.split(/[:/]+/);
+
+// Start the server
+app.listen(8000, function() {
+    console.log('Server running at http://' + parts[1] + ':8000');
+    console.log('Keycloak URL (KC_URL):',  KC_URL);
+    console.log('Service URL (SERVICE_URL):', SERVICE_URL);
+});
