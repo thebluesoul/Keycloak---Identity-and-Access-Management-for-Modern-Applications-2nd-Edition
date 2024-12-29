@@ -1,0 +1,41 @@
+version: '3'
+
+networks:
+  ch2_network:
+    driver: bridge
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "3000:3000"
+    environment:
+      KC_URL: https://192.168.35.177:8443
+      SERVICE_URL: http://192.168.35.177:3000/secured
+      P12_PASSWORD: 12345
+      P12_FILENAME: backend_192x168x35x177.p12
+    volumes:
+      - ./backend/certs:/app/certs
+      - ./backend:/app/src
+    networks:
+      - ch2_network
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8000:8000"
+    environment:
+      KC_URL: https://192.168.35.177:8443
+      SERVICE_URL: http://192.168.35.177:3000/secured
+      P12_PASSWORD: 12345
+      P12_FILENAME: frontend_192x168x35x177.p12
+    volumes:
+      - ./frontend:/app/src
+      - ./frontend/certs:/app/certs
+    # entrypoint: ["/bin/sh", "-c"]
+    # command: ["tail -f /dev/null"]
+    networks:
+      - ch2_network
+
