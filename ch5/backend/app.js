@@ -1,3 +1,5 @@
+// Node.js에서 인증서 검증하지 않도록 설정함.
+process.env["NODE_TLS_REJECT_UNAUTHORIZED"]=0;
 var express = require('express');
 var session = require('express-session');
 var Keycloak = require('keycloak-connect');
@@ -23,7 +25,7 @@ var keycloak = new Keycloak({ store: memoryStore });
 
 app.use(keycloak.middleware());
 
-app.get('/secured', keycloak.protect('realm:myrole'), function (req, res) {
+app.get('/secured', keycloak.protect(['myrealm:myrole']), function (req, res) {
   res.setHeader('content-type', 'text/plain');
   res.send('Secret message!');
 });

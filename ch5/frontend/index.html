@@ -7,7 +7,8 @@
         var serviceUrl = 'SERVICE_URL';
     </script>
     <script type="text/javascript" src="client.js"></script>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css" type="text/css">
+
 </head>
 <body onload="init()">
 
@@ -23,7 +24,7 @@
 <div id="step-discovery" style="display: none;">
     <h2>Discovery</h2>
     <p>
-        <label>Issuer</label><input id="input-issuer" value="http://localhost:8080/realms/myrealm">
+        <label>Issuer</label><input id="input-issuer" value="KC_URL/realms/myrealm">
     </p>
     <p>
         <button onclick="loadDiscovery()">Load OAuth 2.0 Provider Configuration</button>
