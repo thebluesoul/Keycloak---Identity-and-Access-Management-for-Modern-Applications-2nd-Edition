@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Keycloak Example Application</title>
-    <script type="text/javascript" src="KC_URL/js/keycloak.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/keycloak-js@latest/dist/keycloak.min.js"></script>
     <script type="text/javascript">
         function output(content) {
             if (typeof content === 'object') {
@@ -35,16 +35,17 @@
             req.send();
         }
 
-        var kc = new Keycloak({ url: "KC_URL", realm: 'myrealm', clientId: 'myclient' });
+        var kc = new Keycloak({ url: "KC_URL", realm: "REALM_NAME", clientId: "CLIENT_ID" });
+
         window.onload = function() {
-            kc.init({'messageReceiveTimeout': 100000}).then(function() {
+            kc.init({'messageReceiveTimeout': 100000, onLoad: 'check-sso'}).then(function() {
                 if(kc.authenticated) {
                     profile();
                 } else {
                     document.getElementById('anonymous').style.display = 'block';
                 }
             });
-        }
+        };
     </script>
 </head>
 <body>

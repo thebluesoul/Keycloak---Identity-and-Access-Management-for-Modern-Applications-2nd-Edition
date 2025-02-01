@@ -1,5 +1,4 @@
-// Node.js에서 인증서 검증하지 않도록 설정함.
-process.env["NODE_TLS_REJECT_UNAUTHORIZED"]=0;
+var stringReplace = require('string-replace-middleware');
 var express = require('express');
 var session = require('express-session');
 var Keycloak = require('keycloak-connect');
@@ -9,6 +8,18 @@ var dns = require('node:dns');
 dns.setDefaultResultOrder('ipv4first');
 
 var app = express();
+
+var KC_URL = process.env.KC_URL || "http://localhost:8080";
+var SERVICE_URL = process.env.SERVICE_URL || "http://localhost:3000/secured";
+var REALM_NAME = process.env.REALM_NAME || "myrealm";
+var CLIENT_ID = process.env.CLIENT_ID || "myclient";
+
+app.use(stringReplace({
+   'SERVICE_URL': SERVICE_URL,
+   'KC_URL': KC_URL,
+   'REALM_NAME': REALM_NAME,
+   'CLIENT_ID': CLIENT_ID
+}));
 
 app.use(cors());
 
@@ -23,10 +34,10 @@ app.use(session({
 
 // Keycloak 설정 주입 (keycloak.json 내용 통합)
 var keycloakConfig = {
-  "realm": "myrealm",
+  "realm": REALM_NAME || "myrealm",
   "bearer-only": true,
-  "auth-server-url": process.env.KC_URL || "http://localhost:8080",
-  "resource": "myclient",
+  "auth-server-url": KC_URL || "http://localhost:8080",
+  "resource": CLIENT_ID || "myclient",
   "verify-token-audience": false
 };
 
@@ -35,7 +46,7 @@ var keycloak = new Keycloak({ store: memoryStore }, keycloakConfig);
 
 app.use(keycloak.middleware());
 
-app.get('/secured', keycloak.protect(['myrealm:myrole']), function (req, res) {
+app.get('/secured', keycloak.protect([REALM_NAME + ':myrole']), function (req, res) {
   res.setHeader('content-type', 'text/plain');
   res.send('Secret message!');
 });

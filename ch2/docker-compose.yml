@@ -11,10 +11,12 @@ services:
     ports:
       - "3000:3000"
     environment:
-      KC_URL: https://192.168.35.177:8443
-      SERVICE_URL: http://192.168.35.177:3000/secured
-      P12_PASSWORD: 12345
-      P12_FILENAME: backend_192x168x35x177.p12
+      KC_URL: "https://keycloakbb.demo.genians.co.kr"
+      SERVICE_URL: "http://192.168.35.177:3000/secured"
+      P12_PASSWORD: "12345"
+      P12_FILENAME: "backend_192x168x55x196.p12"
+      REALM_NAME: "genians"
+      CLIENT_ID: "http_192x168x35x177_8000"
     volumes:
       - ./backend/certs:/app/certs
       - ./backend:/app/src
@@ -27,10 +29,12 @@ services:
     ports:
       - "8000:8000"
     environment:
-      KC_URL: https://192.168.35.177:8443
-      SERVICE_URL: http://192.168.35.177:3000/secured
-      P12_PASSWORD: 12345
-      P12_FILENAME: frontend_192x168x35x177.p12
+      KC_URL: "https://keycloakbb.demo.genians.co.kr"
+      SERVICE_URL: "http://192.168.35.177:3000/secured"
+      P12_PASSWORD: "12345"
+      P12_FILENAME: "frontend_192x168x55x196.p12"
+      REALM_NAME: "genians"
+      CLIENT_ID: "http_192x168x35x177_8000"
     volumes:
       - ./frontend:/app/src
       - ./frontend/certs:/app/certs

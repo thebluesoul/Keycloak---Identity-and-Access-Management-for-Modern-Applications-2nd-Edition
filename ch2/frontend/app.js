@@ -4,10 +4,14 @@ var stringReplace = require('string-replace-middleware');
 
 var KC_URL = process.env.KC_URL || "http://localhost:8080";
 var SERVICE_URL = process.env.SERVICE_URL || "http://localhost:3000/secured";
+var REALM_NAME = process.env.REALM_NAME || "myrealm";
+var CLIENT_ID = process.env.CLIENT_ID || "myclient";
 
 app.use(stringReplace({
    'SERVICE_URL': SERVICE_URL,
-   'KC_URL': KC_URL
+   'KC_URL': KC_URL,
+   'REALM_NAME': REALM_NAME,
+   'CLIENT_ID': CLIENT_ID
 }));
 
 // Serve static files from the current directory
